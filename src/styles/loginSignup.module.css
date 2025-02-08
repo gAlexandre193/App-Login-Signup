@@ -1,0 +1,39 @@
+.container {
+  background-color: #fff;
+  gap: 20px;
+  border-radius: 12px;
+  padding: 30px 20px;
+}
+
+.container .formTitle {
+  color: #3c009d;
+  font-size: 1.7rem;
+  font-weight: 600;
+  position: relative;
+  margin: 0 auto;
+  margin-bottom: 18px;
+  width: fit-content;
+}
+.container .formTitle::before {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  right: 50%;
+  transform: translateX(-50%);
+  background-color: #3c009d;
+  border-radius: 9px;
+  height: 3px;
+  width: 60%;
+}
+
+.container .inputs { gap: 20px; }
+
+.forgotPassword { color: #797979; }
+
+.forgotPassword a {
+  color: #4c00b4;
+  text-decoration: none;
+}
+
+.container .submitContainer { gap: 12px; }

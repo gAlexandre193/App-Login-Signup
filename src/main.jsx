@@ -1,10 +1,12 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App.jsx';
-import './index.css';
+import LoginSignup from './screen/loginSignup';
+import './styles/Global.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <div className='wrapper flexCol'>
+      <LoginSignup />
+    </div>
   </StrictMode>,
 );
