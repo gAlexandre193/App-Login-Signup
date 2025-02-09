@@ -13,7 +13,7 @@ const btnGrayStyle = {
 };
 
 export default function LoginSignup() {
-  const [formVersion, setFormVersion] = useState('SignUp');
+  const [formVersion, setFormVersion] = useState('Login');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,44 +24,30 @@ export default function LoginSignup() {
     setEmail('');
     setPassword('');
   }
-  const handleFormToLogin = (e) => {
-    /**
-     * Prevents Submit from being activated when changing form versions 
-     * and clears values ​​previously placed in the input
-     */
-    formVersion !== 'Login' 
-      && e.preventDefault() || handleResetInput();
-
-    setFormVersion('Login');
-  }
-  const handleFormToSignUp = (e) => {
-    /**
-     * Prevents Submit from being activated when changing form versions 
-     * and clears values ​​previously placed in the input
-     */
-    formVersion !== 'SignUp' 
-      && e.preventDefault() || handleResetInput();
-    
-    setFormVersion('SignUp');
-  }     
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-
+  const handleSendDataForm = (formData) => {
     // Prevents sending if the email and password are empty
-    if(!email) return alert('Email must be completed');
-    if(!password) return alert('Password must be completed');
-
-    let dataForm = { email, password }
+    if(!formData.email) return alert('Email must be completed');
+    if(!formData.password) return alert('Password must be completed');
     
     if(formVersion === 'SignUp') {
       // Prevents sending if the username are empty
-      if(!username) return alert('Name must be completed');
-
-      return console.log({...dataForm, username})
+      if(!formData.username) return alert('Name must be completed');
     } 
                                               
-    return console.log(dataForm)
+    return console.log(formData);
   }
+  const handleFormToLogin = () => {
+    formVersion === 'Login' && handleSendDataForm({ email, password });
+    formVersion !== 'Login' && handleResetInput();
+
+    setFormVersion('Login');
+  }
+  const handleFormToSignUp = () => {
+    formVersion === 'SignUp' && handleSendDataForm({ username, email, password });
+    formVersion !== 'SignUp' && handleResetInput();
+    
+    setFormVersion('SignUp');
+  }     
 
   // Styles
   const styleBtnGray = (cond) => formVersion === cond ? btnGrayStyle : null;
@@ -77,7 +63,7 @@ export default function LoginSignup() {
   />
 
   return (
-    <form className={`${styles.container} flexCol`} onSubmit={handleFormSubmit}>
+    <form className={`${styles.container} flexCol`}>
       <h2 className={styles.formTitle}> {formVersion} </h2>
 
       <div className={`${styles.inputs} flexCol`}>
@@ -110,14 +96,12 @@ export default function LoginSignup() {
 
       <div className={`${styles.submitContainer} flex`}>
         <Button
-          type='submit' 
           customStyle={styleBtnGray('Login')} 
           onClick={handleFormToSignUp}>
           Sign Up
         </Button>
         
         <Button
-          type='submit' 
           customStyle={styleBtnGray('SignUp')} 
           onClick={handleFormToLogin}>
           Login
