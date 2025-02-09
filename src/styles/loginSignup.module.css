@@ -36,4 +36,16 @@
   text-decoration: none;
 }
 
-.container .submitContainer { gap: 12px; }
+.container .submitContainer { 
+  gap: 12px; 
+  justify-content: center;
+  align-items: center;
+  height: 44px;
+  width: 100%;
+  min-width: 272px;
+}
+
+.submitContainer .loadingImage {
+  height: 40px;
+  width: 40px;
+}

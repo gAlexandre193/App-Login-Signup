@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import emailImage from '../assets/email.png';
-import personImage from '../assets/person.png';
-import passwordImage from '../assets/password.png';
+import toast, { Toaster } from 'react-hot-toast';
+import emailImage from '../imgs/email.png';
+import personImage from '../imgs/person.png';
+import passwordImage from '../imgs/password.png';
+import loadingImage from '../imgs/loading.svg';
 import Input from '../components/inputs';
 import styles from '../styles/loginSignup.module.css';
 import Button from '../components/button';
@@ -17,6 +19,7 @@ export default function LoginSignup() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   // Actions
   const handleResetInput = () => {
@@ -26,15 +29,24 @@ export default function LoginSignup() {
   }
   const handleSendDataForm = (formData) => {
     // Prevents sending if the email and password are empty
-    if(!formData.email) return alert('Email must be completed');
-    if(!formData.password) return alert('Password must be completed');
+    if(!formData.email) return toast.error('Email must be completed');
+    if(!formData.password) return toast.error('Password must be completed');
     
     if(formVersion === 'SignUp') {
       // Prevents sending if the username are empty
-      if(!formData.username) return alert('Name must be completed');
+      if(!formData.username) return toast.error('Name must be completed');
     } 
-                                              
-    return console.log(formData);
+    
+    setLoading(true);
+
+    setTimeout(() => {
+      toast.success(`${formVersion === 'Login' 
+        ? 'Connected successfully' 
+        : 'Successfully registered'}`);
+
+      setLoading(false);
+      return console.log(formData);
+    }, 800)
   }
   const handleFormToLogin = () => {
     formVersion === 'Login' && handleSendDataForm({ email, password });
@@ -53,17 +65,40 @@ export default function LoginSignup() {
   const styleBtnGray = (cond) => formVersion === cond ? btnGrayStyle : null;
 
   // Render
-  const renderInputName = () => formVersion === 'SignUp' && <Input
+  const renderInputName = () => (formVersion === 'SignUp' && <Input
     iconURL={personImage}
     iconDescription='Person'
     placeholder='Name'
     required
     value={username}
     onChange={setUsername}
-  />
+  />)
+  const renderFormButtons = () => (loading
+    ? <img
+      src={loadingImage}
+      alt='Loading'
+      className={styles.loadingImage}
+      height={40}
+      width={40}
+    />
+    : <>
+      <Button
+        customStyle={styleBtnGray('Login')}
+        onClick={handleFormToSignUp}>
+        Sign Up
+      </Button>
+
+      <Button
+        customStyle={styleBtnGray('SignUp')}
+        onClick={handleFormToLogin}>
+        Login
+      </Button>
+    </>)
 
   return (
     <form className={`${styles.container} flexCol`}>
+      <Toaster position='top-right' />
+
       <h2 className={styles.formTitle}> {formVersion} </h2>
 
       <div className={`${styles.inputs} flexCol`}>
@@ -95,17 +130,7 @@ export default function LoginSignup() {
       </div>
 
       <div className={`${styles.submitContainer} flex`}>
-        <Button
-          customStyle={styleBtnGray('Login')} 
-          onClick={handleFormToSignUp}>
-          Sign Up
-        </Button>
-        
-        <Button
-          customStyle={styleBtnGray('SignUp')} 
-          onClick={handleFormToLogin}>
-          Login
-        </Button>
+        {renderFormButtons()}
       </div>
     </form>
   );
